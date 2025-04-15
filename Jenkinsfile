@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         ACR_NAME = 'yashpacr11'
-        AZURE_CREDENTIALS_ID = 'integrated-service-principal' // Set this in Jenkins Credentials
+        AZURE_CREDENTIALS_ID = 'integrated-service-principal'
         ACR_LOGIN_SERVER = "${ACR_NAME}.azurecr.io"
         IMAGE_NAME = 'webapidocker1'
         IMAGE_TAG = 'latest'
@@ -27,21 +27,30 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                withCredentials([azureServicePrincipal(credentialsId: AZURE_CREDENTIALS_ID)]) {
-                    bat "az login --service-principal -u %AZURE_CLIENT_ID% -p %AZURE_CLIENT_SECRET% --tenant %AZURE_TENANT_ID% && cd %TF_WORKING_DIR% && terraform init"
+                withCredentials([azureServicePrincipal(credentialsId: "${AZURE_CREDENTIALS_ID}")]) {
+                    dir("${TF_WORKING_DIR}") {
+                        bat '''
+                            az login --service-principal -u %AZURE_CLIENT_ID% -p %AZURE_CLIENT_SECRET% --tenant %AZURE_TENANT_ID%
+                            terraform init
+                        '''
+                    }
                 }
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                bat "cd %TF_WORKING_DIR% && terraform plan -out=tfplan"
+                dir("${TF_WORKING_DIR}") {
+                    bat "terraform plan -out=tfplan"
+                }
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                bat "cd %TF_WORKING_DIR% && terraform apply -auto-approve tfplan"
+                dir("${TF_WORKING_DIR}") {
+                    bat "terraform apply -auto-approve tfplan"
+                }
             }
         }
 
