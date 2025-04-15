@@ -1,0 +1,18 @@
+# Ignore Visual Studio files
+.vs/
+.vscode/
+.idea/
+
+# Ignore build outputs
+bin/
+obj/git rm -r --cached .vs
+
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Ignore VS Code settings (optional, if you're using VS Code)
+.vscode/
