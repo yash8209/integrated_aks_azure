@@ -9,7 +9,8 @@ pipeline {
         IMAGE_TAG = 'latest'
         RESOURCE_GROUP = 'int-azure-aks'
         AKS_CLUSTER = 'yashpaks11'
-        TF_WORKING_DIR = '.'
+        TF_WORKING_DIR = 'api_azure/terraform'
+
     }
 
     stages {
