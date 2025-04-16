@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: webapi
-          image: yashpacr11.azurecr.io/webapi:latest  
+          image: yashpacr11.azurecr.io/webapidocker1:latest  
           ports:
             - containerPort: 80
           imagePullPolicy: Always
